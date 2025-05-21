@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
     };
     res.cookie("token", tokenJWT, Option);
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ token:tokenJWT, message: "Login successful" });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ error: "Internal server error" });
