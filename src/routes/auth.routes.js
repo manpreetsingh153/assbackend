@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   //   console.log(username, email, password);
-  if (!username || !email || password.length < 6) {
+  if (!username || !email || password.length < 4) {
     return res.status(400).json({ error: "Invalid input" });
   }
   try {
