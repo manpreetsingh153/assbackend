@@ -36,29 +36,14 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { identifier, password, token } = req.body;
+  const { identifier, password } = req.body;
   console.log(identifier, password);
   if (!identifier || !password) {
     return res.status(400).json({ error: "Invalid input" });
   }
 
   try {
-    const recaptchaResponse = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET_KEY,
-          response: token,
-        },
-      }
-    );
-
-    if (!recaptchaResponse.data.success) {
-      return res
-        .status(400)
-        .json({ error: "Invalid reCAPTCHA. Please try again." });
-    }
+   
     const userQuery = await pool.query(
       "SELECT * FROM users WHERE username = $1 OR email = $1",
       [identifier]
