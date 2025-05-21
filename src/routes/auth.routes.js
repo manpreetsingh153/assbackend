@@ -29,9 +29,7 @@ router.post("/register", async (req, res) => {
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
       [username, email, hashedPassword]
     );
-    res
-      .status(200)
-      .json({ message: "Registration successfully!!!!!!!" });
+    res.status(200).json({ message: "Registration successfully!!!!!!!" });
   } catch (error) {}
 });
 
@@ -43,7 +41,6 @@ router.post("/login", async (req, res) => {
   }
 
   try {
-   
     const userQuery = await pool.query(
       "SELECT * FROM users WHERE username = $1 OR email = $1",
       [identifier]
@@ -62,9 +59,12 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    //   console.log(tokenJWT);
+    //   console.log(tokenJWT);{
+
     const Option = {
-      maxAge: 3600000,
+      secure: true,
+      sameSite: "None",
+      maxAge: 15 * 60 * 1000,
       httpOnly: true,
     };
     res.cookie("token", tokenJWT, Option);
@@ -76,7 +76,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/profile", authMiddleware, async (req, res) => {
-  //   console.log(req.user);
+  console.log(req.user);
   try {
     const user = await pool.query(
       "SELECT id, username, email, created_at FROM users WHERE id = $1",
